@@ -12,7 +12,6 @@ const io = new Server(server, {
 
 //const messagesArray = []
 
-/*
 const messages = [
   {
     author: "Diego",
@@ -27,7 +26,6 @@ const messages = [
     message: "Hola grupo"
   }
 ]
-*/
 
 const productos = [
   {
@@ -56,7 +54,8 @@ io.on('connection', (socket) => {
   console.log('😄 Nuevo usuario conectado');
   socket.emit('mensajeConexion', '🔥 Bienvenidos al websocket Coderhouse');
   // Comparto los mensajes
-  io.sockets.emit('messageBack', productos);
+  io.sockets.emit('productBack', productos);
+  io.sockets.emit('messageBack', messages);
   
   socket.on('disconnect',() => {
     console.log('🥺 Usuario desconectado');
@@ -67,10 +66,14 @@ io.on('connection', (socket) => {
   })
 
   // Recibimos los mensajes desde el frontend
-  socket.on('messageFront', (data) => {
+  socket.on('productFront', (data) => {
     productos.push(data);
-    //io.sockets.emit('message', data);
-    io.sockets.emit('messageBack', productos);
+    io.sockets.emit('productBack', productos);
+  })
+
+  socket.on('messageFront', (data) => {
+    messages.push(data);
+    io.sockets.emit('messageBack', messages);
   })
 })
 

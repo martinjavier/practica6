@@ -9,3 +9,8 @@ h1 {
 .mensaje{
     color: green;
 }
+
+.formulario{
+    background-color: lightgray;
+    padding: 10px;
+}
