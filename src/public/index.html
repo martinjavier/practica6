@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Websocket</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h1>Turorial Websocket.io</h1>
+    <fieldset>
+        <form onSubmit="addMessage(); return false">
+            Nombre
+            <input type="text" name="nombre" id="nombre">
+            Precio
+            <input type="text" name="precio" id="precio">
+            Foto
+            <input type="text" name="foto" id="foto">
+            <button id="send" type="submit">Enviar</button>
+        </form>
+    </fieldset>
+    <fieldset>
+        <h1>Productos</h1>
+        <ul id="productos"></ul>
+    </fieldset>
+    <script>
+        const socket = io('http://localhost:8080')        
+        // const input = document.getElementById('message')
+        // const boton = document.getElementById('send')
+        // boton.addEventListener('click', () => {
+        //     socket.emit('messageFront', input.value);
+        // })
+
+        /*
+        // mando el mensaje al backend
+        input.addEventListener('input', () => {
+            console.log(input.value);
+            socket.emit('message', input.value);
+        })
+        */
+
+        socket.on('messageBack', (data) => {
+            console.log('Recibida desde backend',data);
+            let innerText = '';
+            data.map((productos) => {
+                innerText += `
+                <li>
+                <div class="nombre">Nombre: ${productos.nombre}</div>
+                <div class="precio">Precio: ${productos.precio}</div>
+                <div class="foto">Foto: <img src="${productos.foto}"/></div>
+                </li>
+                `
+            })
+            document.getElementById('productos').innerHTML = innerText;
+
+
+        })
+
+        socket.on('mensajeConexion', (data) => {
+            console.log(data)
+            //alert(data)
+            socket.emit('mensajeRespuesta','👋 Muchas gracias');
+        });
+
+        function addMessage(){
+            const nombre = document.getElementById('nombre').value;
+            const precio = document.getElementById('precio').value;
+            const foto = document.getElementById('foto').value;
+
+            socket.emit('messageFront', {
+                nombre,
+                precio,
+                foto
+            })
+            document.getElementById('productos').value=''
+        }
+    </script>
+</body>
+</html>
