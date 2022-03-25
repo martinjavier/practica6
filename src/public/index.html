@@ -24,14 +24,15 @@
         </form>
     </fieldset>
     <fieldset>
-        <form class="formulario">
+        <form class="formulario" onSubmit="addMessage(); return false">
             <h1>Centro de Mensajes</h1>
             EMail
-            <input type="text" name="email" id="email"><br>
-            <ul id="mensajes"></ul>
+            <input type="text" name="email" id="email"><br>            
             Mensaje
-            <input type="text" name="mensaje" id="mensaje">
-            <button id="sendMessage" type="submit">Enviar</button>
+            <input type="text" name="mensaje" id="mensaje"><br>
+            <button id="sendMessage" type="submit">Enviar</button><br>
+            Lista de Mensajes
+            <ul id="mensajes"></ul>
         </form>
     </fieldset>
     <script>
@@ -59,14 +60,11 @@
             document.getElementById('productos').innerHTML = innerText;
         })
 
-        socket.on('menssageBack', (data) => {
+        socket.on('messageBack', (data) => {
             console.log('Recibida desde backend',data);
             let innerText = '';
             data.map((messages) => {
-                innerText += `
-                  <h2>${messages.author}</h2>
-                  <h2>${messages.message}</h2>
-                `
+                innerText += `<p class="author">${messages.author}</p><p class="message">${messages.message}</p>`
             })
             document.getElementById('mensajes').innerHTML = innerText;
         })
@@ -92,12 +90,12 @@
         }
 
         function addMessage(){
-            const email = document.getElementById('email').value;
-            const mensaje = document.getElementById('mensaje').value;
+            const author = document.getElementById('email').value;
+            const message = document.getElementById('mensaje').value;
 
-            socket.emit('menssageFront', {
-                email,
-                mensaje                
+            socket.emit('messageFront', {
+                author,
+                message                
             })
             document.getElementById('mensaje').value=''
         }

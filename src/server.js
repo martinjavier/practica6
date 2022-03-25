@@ -14,15 +14,15 @@ const io = new Server(server, {
 
 const messages = [
   {
-    author: "Diego",
+    author: "diego.flores@gmail.com",
     message: "Hola"
   },
   {
-    author: "Jorge",
+    author: "jorge.ramos@gmail.com",
     message: "Cómo están"
   },
   {
-    author: "Ana",
+    author: "analucia.lopez@gmail.com",
     message: "Hola grupo"
   }
 ]
